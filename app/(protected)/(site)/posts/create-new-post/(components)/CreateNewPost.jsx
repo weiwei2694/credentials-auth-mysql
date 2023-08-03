@@ -3,10 +3,11 @@ import { useState } from "react";
 
 import { IoMdCreate } from "react-icons/io";
 
-const CreateNewPost = () => {
+const CreateNewPost = ({ userId }) => {
   const [data, setData] = useState({
     title: "",
     description: "",
+    userId
   });
 
   async function action() {} //temporary

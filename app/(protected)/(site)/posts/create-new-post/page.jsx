@@ -11,7 +11,7 @@ const CreateNewPostPage = async () => {
 
   return (
     <div className="container max-w-[450px] mt-6">
-        <CreateNewPost />
+        <CreateNewPost userId={session.user.userId} />
     </div>
   )
 }
