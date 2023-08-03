@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const PostsItem = ({ item }) => {
+const PostsItem = ({ item, name }) => {
   return (
     <article className="border border-gray-200 rounded py-4 px-6">
         {/* Title */}
@@ -15,7 +15,7 @@ const PostsItem = ({ item }) => {
         <p className="text-sm text-gray-500">{item.description}</p>
 
         {/* Copyright - Footer */}
-        <p className={`${inter.className} font-medium text-black text-xs mt-4`}>© Wei, Inc. All rights reserved.</p>
+        <p className={`${inter.className} font-medium text-black text-xs mt-4`}>© {name}, Inc. All rights reserved.</p>
     </article>
   )
 }

@@ -4,6 +4,7 @@ import { getPosts } from "@/lib/posts";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/auth";
 import { redirect } from "next/navigation";
+import { getUsers } from "@/lib/user";
 
 const PostsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -11,6 +12,7 @@ const PostsPage = async () => {
   if (!session) redirect("/login");
 
   const posts = await getPosts();
+  const users = await getUsers();
 
   return (
     <div className="container mt-6">
@@ -27,9 +29,10 @@ const PostsPage = async () => {
         </div>
       ) : (
         <div className="space-y-6 columns-1 sm:columns-2 md:columns-3 md:gap-6">
-          {posts.map((item) => (
-            <PostsItem key={item.id} item={item} />
-          ))}
+          {posts.map((item) => {
+            const user = users.find(({ id }) => id === item.userId);
+            return <PostsItem key={item.id} item={item} name={user.name} />;
+          })}
         </div>
       )}
     </div>
