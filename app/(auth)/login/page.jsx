@@ -9,11 +9,11 @@ const LoginPage = async ({ searchParams }) => {
 
   if (session) redirect('/dashboard');
 
-  const OAuthCallbackError = searchParams?.error
+  const callbackError = searchParams?.error
 
   return (
     <div>
-        <Login OAuthCallbackError={OAuthCallbackError} />
+        <Login callbackError={callbackError} />
     </div>
   )
 }

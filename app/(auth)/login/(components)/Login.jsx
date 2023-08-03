@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react";
 
 import { FcGoogle } from "react-icons/fc"
 
-const Login = ({ OAuthCallbackError }) => {
+const Login = ({ callbackError }) => {
   const router = useRouter();
 
   const [data, setData] = useState({
@@ -18,7 +18,7 @@ const Login = ({ OAuthCallbackError }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (OAuthCallbackError) return setError("Gmail that you use, already registered")
+    if (callbackError === "OAuthAccountNotLinked") return setError("Gmail that you use, already registered")
   }, [])
 
   const loginUser = async (e) => {
