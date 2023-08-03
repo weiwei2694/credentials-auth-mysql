@@ -1,7 +1,15 @@
 import { PostsItem, PostsNavigation } from "./(components)"
 import { getPosts } from "@/lib/posts"
 
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/utils/auth"
+import { redirect } from "next/navigation"
+
 const PostsPage = async () => {
+    const session = await getServerSession(authOptions)
+
+    if (!session) redirect('/login');
+
     // const posts = await getPosts()
     
     // temporary
