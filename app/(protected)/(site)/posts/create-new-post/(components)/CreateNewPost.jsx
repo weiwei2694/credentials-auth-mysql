@@ -3,6 +3,9 @@ import { useState } from "react";
 
 import { IoMdCreate } from "react-icons/io";
 
+// actions
+import { createPostAction } from "@/app/_actions";
+
 const CreateNewPost = ({ userId }) => {
   const [data, setData] = useState({
     title: "",
@@ -10,7 +13,16 @@ const CreateNewPost = ({ userId }) => {
     userId,
   });
 
-  async function action() {} //temporary
+  const createNewPost = async () => {
+    await createPostAction(data)
+
+    setData({
+      title: "",
+      description: "",
+      userId,
+    })
+  }
+
   return (
     <div className="w-full flex flex-col gap-10">
       {/* Heading */}
@@ -21,7 +33,7 @@ const CreateNewPost = ({ userId }) => {
       </div>
 
       {/* Form */}
-      <form action={action} className="flex flex-col gap-20">
+      <form action={createNewPost} className="flex flex-col gap-20">
         <div className="flex flex-col gap-10">
           <div>
             <label htmlFor="title" className="block text-sm text-gray-900">
@@ -81,7 +93,7 @@ const CreateNewPost = ({ userId }) => {
 
         <div>
           <button
-            type="button"
+            type="submit"
             className="flex w-full justify-center items-center gap-3 rounded p-3 text-white font-medium bg-black leading-6"
           >
             Create
