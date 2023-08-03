@@ -15,12 +15,9 @@ const PostsPage = async () => {
   const users = await getUsers();
 
   return (
-    <div className="container mt-6">
+    <div className="container mt-6 flex flex-col gap-8">
       {/* Navigation */}
       <PostsNavigation />
-
-      {/* Divider */}
-      <div className="h-[1px] mb-6 md:mb-10 mt-3 bg-gray-200" />
 
       {/* PostsItem */}
       {posts.length === 0 ? (
