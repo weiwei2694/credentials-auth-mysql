@@ -27,7 +27,7 @@ export const authOptions = {
 
         if (!user) return null;
 
-        const passwordMatch = compare(password, user.hashedPassword);
+        const passwordMatch = await compare(password, user.hashedPassword);
 
         if (!passwordMatch) return null;
 
