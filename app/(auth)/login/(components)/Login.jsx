@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
-const Login = () => {
+import { FcGoogle } from "react-icons/fc"
+
+const Login = ({ OAuthCallbackError }) => {
   const router = useRouter();
 
   const [data, setData] = useState({
@@ -14,6 +16,10 @@ const Login = () => {
 
   const [mutation, setMutation] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (OAuthCallbackError) return setError("Gmail that you use, already registered")
+  }, [])
 
   const loginUser = async (e) => {
     e.preventDefault();
@@ -36,8 +42,18 @@ const Login = () => {
   };
 
   return (
-    <div className="container flex justify-center">
-      <div className="w-full max-w-[450px] mt-16 flex flex-col gap-10">
+    <div className="container max-w-[450px] flex flex-col items-center">
+      {/* Error */}
+      <div className="mt-16 mb-10 w-full">
+        <div className="bg-red-500 rounded py-4 px-8">
+          <p className="font-medium text-white">
+            {error}
+          </p>
+        </div>
+      </div>
+
+      {/* Credentials */}
+      <div className="w-full flex flex-col gap-10">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-black">
             Sign In
@@ -101,6 +117,26 @@ const Login = () => {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Divider */}
+      <div className="my-16 w-full">
+        <div className="relative">
+          <div className="flex justify-center items-center absolute top-0 left-0 right-0 bottom-0">
+            <h2 className="w-fit font-medium text-gray-500 tracking-wide p-2 bg-white">Or</h2>
+          </div>
+
+          <div className="bg-gray-200 h-[1px]" />
+        </div>
+      </div>
+
+
+      {/* OAuth */}
+      <div className="w-full font-medium text-black">
+        <button type="button" onClick={() => signIn('google', { redirect: false })} className="w-full rounded py-3 px-6 border border-gray-200 flex items-center justify-center gap-5 bg-white hover:bg-gray-50 transition active:bg-gray-100">
+          <FcGoogle/>
+          Sign In With Google
+        </button>
       </div>
     </div>
   );
