@@ -23,8 +23,8 @@ const Navbar = ({ userImg, name }) => {
 
             {/* List */}
             <ul className="flex gap-4">
-                <Link href="/dashboard" className="font-medium text-sm tracking-wide text-gray-500 hover:text-gray-700 transition">Dashboard</Link>
-                <Link href="/posts" className="font-medium text-sm tracking-wide text-gray-500 hover:text-gray-700 transition">Posts</Link>
+                <Link href="/dashboard" className="font-medium text-black transition">Dashboard</Link>
+                <Link href="/posts" className="font-medium text-black transition">Posts</Link>
             </ul>
         </div>
 
