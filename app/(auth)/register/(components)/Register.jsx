@@ -43,8 +43,8 @@ const Register = () => {
     }
   };
   return (
-    <div className="container flex justify-center">
-      <div className="w-full max-w-[450px] mt-16 flex flex-col gap-10">
+    <div className="container max-w-[450px] flex justify-center">
+      <div className="w-full mt-16 flex flex-col gap-10">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-black">
             Sign Up
