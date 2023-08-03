@@ -6,7 +6,11 @@ import { IoMdCreate } from "react-icons/io";
 // actions
 import { createPostAction } from "@/app/_actions";
 
+import { useRouter } from "next/navigation";
+
 const CreateNewPost = ({ userId }) => {
+  const router = useRouter();
+
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -21,6 +25,8 @@ const CreateNewPost = ({ userId }) => {
       description: "",
       userId,
     })
+
+    router.push('/posts')
   }
 
   return (
