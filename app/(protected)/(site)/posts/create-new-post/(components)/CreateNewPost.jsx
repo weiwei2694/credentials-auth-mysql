@@ -7,7 +7,7 @@ const CreateNewPost = ({ userId }) => {
   const [data, setData] = useState({
     title: "",
     description: "",
-    userId
+    userId,
   });
 
   async function action() {} //temporary
@@ -36,6 +36,15 @@ const CreateNewPost = ({ userId }) => {
               required
               className="block w-full border-b outline-none border-b-gray-200 focus:border-b-2 focus:border-b-gray-400 pt-1.5 text-black placeholder:text-gray-400 sm:text-sm sm:leading-6"
             />
+            <div className="flex justify-end">
+              <p
+                className={`font-medium ${
+                  data.title.length > 60 ? "text-red-500" : "text-black"
+                } text-xs mt-1 tracking-wider`}
+              >
+                {data.title.length}/60
+              </p>
+            </div>
           </div>
 
           <div>
@@ -55,8 +64,18 @@ const CreateNewPost = ({ userId }) => {
                 setData({ ...data, description: e.target.value })
               }
               required
+              rows="10"
               className="block w-full border-b outline-none border-b-gray-200 focus:border-b-2 focus:border-b-gray-400 pt-1.5 text-black placeholder:text-gray-400 sm:text-sm sm:leading-6"
             />
+            <div className="flex justify-end">
+              <p
+                className={`font-medium ${
+                  data.description.length > 612 ? "text-red-500" : "text-black"
+                } text-xs mt-1 tracking-wider`}
+              >
+                {data.description.length}/612
+              </p>
+            </div>
           </div>
         </div>
 
