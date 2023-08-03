@@ -44,12 +44,14 @@ const Login = ({ OAuthCallbackError }) => {
   return (
     <div className="container max-w-[450px] flex flex-col items-center">
       {/* Error */}
-      <div className="mt-16 mb-10 w-full">
-        <div className="bg-red-500 rounded py-4 px-8">
-          <p className="font-medium text-white">
-            {error}
-          </p>
-        </div>
+      <div className={`mt-16 w-full ${error && 'mb-10'}`}>
+        {error && (
+            <div className="bg-red-500 rounded py-4 px-8">
+              <p className="font-medium text-white">
+                {error}
+              </p>
+            </div>
+        )}
       </div>
 
       {/* Credentials */}
