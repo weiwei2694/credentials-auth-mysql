@@ -1,4 +1,4 @@
-import { PostsItem } from "./(components)"
+import { PostsItem, PostsNavigation } from "./(components)"
 import { getPosts } from "@/lib/posts"
 
 const PostsPage = async () => {
@@ -34,6 +34,13 @@ const PostsPage = async () => {
 
   return (
     <div className="container mt-6">
+        {/* Navigation */}
+        <PostsNavigation />
+
+        {/* Divider */}
+        <div className="h-[1px] mb-6 md:mb-10 mt-3 bg-gray-200" />
+
+        {/* PostsItem */}
         <div className="space-y-6 columns-1 sm:columns-2 md:columns-3 md:gap-6">
             {posts?.map((item) => (
                 <PostsItem key={item.id} item={item} />
