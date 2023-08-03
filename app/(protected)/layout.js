@@ -1,9 +1,14 @@
 import { Navbar } from "./(components)"
 
-const layout = ({ children }) => {
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/utils/auth"
+
+const layout = async ({ children }) => {
+    const session = await getServerSession(authOptions)
+    
   return (
     <>
-        <Navbar />
+        <Navbar userImg={session?.user?.image} name={session?.user.name} />
         <main>
             {children}
         </main>
