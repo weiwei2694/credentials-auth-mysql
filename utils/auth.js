@@ -7,6 +7,10 @@ import { compare } from "bcrypt";
 export const authOptions = {
   adapter: PrismaAdapter(db),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {
