@@ -28,7 +28,7 @@ const Recovered = ({ email }) => {
 
         const status = res.status;
 
-        if (status === 200) router.push('/auth/login?callbackSuccess')
+        if (status === 200) router.push('/login?callbackSuccess')
     } catch (error) {
       console.log(error.message)
     } finally {
