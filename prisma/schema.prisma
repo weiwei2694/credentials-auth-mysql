@@ -49,6 +49,8 @@ model User {
   hashedPassword String?
   email          String?   @unique
   emailVerified  DateTime?
+  hashOtp        String?
+  otpExpired     DateTime?
   image          String?
   accounts       Account[]
   sessions       Session[]
