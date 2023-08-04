@@ -11,9 +11,9 @@ const VerifyOtpPage = ({ searchParams }) => {
   return (
     <div>
         {/* Only Validation */}
-        <Validation email={email} />
+        <Validation />
 
-        <VerifyOtp />
+        <VerifyOtp email={email} />
     </div>
   )
 }

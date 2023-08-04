@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useOtp } from "@/context/resetPassword";
 
-const VerifyOtp = () => {
+const VerifyOtp = ({ email }) => {
   const router = useRouter();
 
   const [otpValue, setOtpValue] = useState("");
@@ -24,9 +24,7 @@ const VerifyOtp = () => {
   }, [time]);
 
   // state from resetPassword
-  const otp = useOtp((state) => state.otp);
-  const setOtp = useOtp((state) => state.setOtp);
-  const setValidOtp = useOtp(state => state.setValidOtp)
+  const setCurrentPage = useOtp(state => state.setCurrentPage);
 
   const [mutation, setMutation] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,20 +33,26 @@ const VerifyOtp = () => {
   const isValidOtp = async (e) => {
     e.preventDefault();
 
-    // validation
-    if (otpValue !== otp.otp.toString()) return setError("Invalid OTP");
-    if (otpValue === otp.otp.toString()) {
-      const currentTime = new Date().getTime();
-      if (otp.expired <= currentTime)
-        return setError("Your OTP has been Expired");
-    }
+    setMutation(true);
     setError("");
 
-    setMutation(true);
-
     try {
-      setValidOtp();
-      router.push(`/accounts/recovered?email=${otp.email}`)
+      const resOtp = await fetch('/api/otp', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp: otpValue })
+      })
+
+      const status = resOtp.status
+      const text = await resOtp.text()
+
+      if (status === 400) return setError(text);
+      if (status === 410) return setError(text);
+
+      setCurrentPage({ newCurrentPage: 'recovered' })
+      router.push(`/accounts/recovered?email=${email}`)
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -56,7 +60,7 @@ const VerifyOtp = () => {
     }
   };
 
-  const getNewCode = async (email) => {
+  const getNewCode = async () => {
     setLoading(true);
 
     // Gets the current time in milliseconds
@@ -69,23 +73,33 @@ const VerifyOtp = () => {
     try {
       const data = {
         email,
-        otp: Math.floor(Math.random() * 9000 + 1000),
-        expired: expirationTime,
+        otp: Math.floor(Math.random() * 9000 + 1000).toString(),
+        otpExpired: expirationTime,
       };
-
-      setOtp(data);
 
       const res = await fetch("/api/email", {
         method: "POST",
         headers: {
           "Context-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ email, otp: data.otp }),
       });
 
       const status = res.status;
 
-      if (status === 201) setTime(120);
+      if (status === 201) {
+        // update hashOtp & otpExpired inside user table
+        await fetch('/api/otp', {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+
+        setTime(120);
+        return;
+      }
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -140,7 +154,7 @@ const VerifyOtp = () => {
               <button
                 type="button"
                 className="text-blue-600 cursor-pointer hover:underline transition"
-                onClick={() => getNewCode(otp.email)}
+                onClick={() => getNewCode()}
               >
                 {loading ? "Loading..." : "Get a new code"}
               </button>

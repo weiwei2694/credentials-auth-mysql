@@ -4,17 +4,15 @@ import { useOtp } from "@/context/resetPassword";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components";
 
-const Validation = ({ email }) => {
+const Validation = () => {
     const router = useRouter();
 
     const [loading, setLoading] = useState(true);
 
-    const otp = useOtp(state => state.otp)
+    const currentPage = useOtp(state => state.currentPage)
 
     const checkOtpState = () => {
-        if (!otp.otp || !email || !otp.expired) return router.push('/accounts/reset-password');
-        if (email !== otp.email) return router.push('/accounts/reset-password');
-
+        if (currentPage !== 'verify-otp') router.push('/accounts/reset-password');
         setLoading(false)
     }
 
