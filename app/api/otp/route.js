@@ -5,9 +5,21 @@ import { hash, compare } from "bcrypt";
 export async function PATCH(req){
     const { email, otp, otpExpired } = await req.json();
 
-    if (!otp || !otpExpired || !email) return new NextResponse('Missing otp, otpExpired or email', { status: 400 })
+    if (!email) return new NextResponse('Missing email', { status: 400 })
 
     try {
+        if (!otp && !otpExpired) {
+            await db.user.update({
+                where: { email },
+                data: {
+                    hashOtp: null,
+                    otpExpired: null
+                }
+            })
+
+            return new NextResponse(null, { status: 204 })
+        }
+
         const hashOtp = await hash(otp, 10);
 
         const user = await db.user.update({
@@ -27,13 +39,13 @@ export async function PATCH(req){
     }
 }
 
-export async function GET(req){
+export async function POST(req){
     const { email, otp } = await req.json();
 
     if (!email || !otp) return new NextResponse('Missing email or otp', { status: 400 })
 
     try {
-        const user = db.user.findUnique({
+        const user = await db.user.findUnique({
             where: { email }
         })
 
@@ -41,7 +53,7 @@ export async function GET(req){
 
         const otpMatch = await compare(otp, user?.hashOtp)
 
-        if (!otpMatch) return new NextResponse('Invalid OTP', { status: 410 })
+        if (!otpMatch) return new NextResponse('Invalid OTP', { status: 400 })
 
         const currentTime = new Date().getTime();
 
