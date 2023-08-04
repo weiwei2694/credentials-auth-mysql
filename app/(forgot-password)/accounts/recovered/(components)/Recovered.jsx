@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useOtp } from "@/context/resetPassword";
 
 const Recovered = ({ email }) => {
   const router = useRouter();
@@ -11,6 +12,9 @@ const Recovered = ({ email }) => {
   })
 
   const [mutation, setMutation] = useState(false);
+
+  // state from resetPassword
+  const setCurrentPage = useOtp(state => state.setCurrentPage);
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -28,7 +32,19 @@ const Recovered = ({ email }) => {
 
         const status = res.status;
 
-        if (status === 200) router.push('/login?callbackSuccess')
+        if (status === 200) {
+          await fetch('/api/otp', {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, otp: null, otpExpired: null })
+          })
+
+          router.push('/login?callbackSuccess')
+          setCurrentPage({ newCurrentPage: '' })
+          return;
+        }
     } catch (error) {
       console.log(error.message)
     } finally {

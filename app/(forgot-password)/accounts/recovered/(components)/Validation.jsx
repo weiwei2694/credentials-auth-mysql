@@ -9,11 +9,10 @@ const Validation = () => {
     const router = useRouter()
 
     const [loading, setLoading] = useState(true);
-    const validOtp = useOtp(state => state.validOtp)
+    const currentPage = useOtp(state => state.currentPage)
 
     const checkOtp = () => {
-        if (validOtp === false) return router.push('/accounts/reset-password');
-
+        if (currentPage !== 'recovered') return router.push('/accounts/reset-password');
         setLoading(false);
     }
 
