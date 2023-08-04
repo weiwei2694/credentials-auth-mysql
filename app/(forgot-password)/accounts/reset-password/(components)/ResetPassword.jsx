@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useOtp } from "@/context/resetPassword";
 import { isEmailValid } from "@/lib/email";
+import { useOtp } from "@/context/resetPassword";
 
 const ResetPassword = () => {
   const router = useRouter();
@@ -10,10 +10,10 @@ const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
-  // state from resetPassword
-  const setOtp = useOtp((state) => state.setOtp);
-
   const [mutation, setMutation] = useState(false);
+
+  // from resetPassword
+  const setCurrentPage = useOtp(state => state.setCurrentPage);
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -26,16 +26,14 @@ const ResetPassword = () => {
     // Set a time limit of 2 minutes from now
     const twoMinutesLater = currentTime + 2 * 60 * 1000;
     // Converts the timeout to a Date object
-    const expirationTime = new Date(twoMinutesLater);
+    const expirationTime = new Date(twoMinutesLater)
 
     try {
       const data = {
         email,
-        otp: Math.floor(Math.random() * 9000 + 1000),
-        expired: expirationTime
+        otp: Math.floor(Math.random() * 9000 + 1000).toString(),
+        otpExpired: expirationTime
       }
-  
-      setOtp(data)
   
       const res = await fetch('/api/email', {
         method: "POST",
@@ -44,10 +42,29 @@ const ResetPassword = () => {
         },
         body: JSON.stringify(data)
       })
-      const status = res.status;
 
-      if (status === 403) setError("This email has been registered via OAuth and cannot use the forgot password feature.")
-      if (status === 201) router.push(`/accounts/verify-otp?email=${email}`)
+      const status = res.status;
+      const text = await res.text();
+
+      if (status === 404) return setError(text);
+      if (status === 403) return setError(text);
+      if (status === 201) {
+        // fetch api/otp
+        await fetch('/api/otp', {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+
+        // set current page
+        setCurrentPage({ newCurrentPage: 'verify-otp' })
+
+        // push
+        router.push(`/accounts/verify-otp?email=${email}`)
+        return;
+      }
     } catch (error) {
       console.log(error.message)
     } finally {
