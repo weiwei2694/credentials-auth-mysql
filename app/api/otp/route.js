@@ -18,7 +18,7 @@ export async function PATCH(req){
             }
         })
 
-        if (!user) return new NextResponse(null, { status: 204 })
+        if (!user) return new NextResponse("User not found", { status: 404 });
 
         return new NextResponse(JSON.stringify(user), { status: 200 });
     } catch (error) {
@@ -37,7 +37,7 @@ export async function GET(req){
             where: { email }
         })
 
-        if (!user) return new NextResponse(null, { status: 204 });
+        if (!user) return new NextResponse("User not found", { status: 404 });
 
         const otpMatch = await compare(otp, user?.hashOtp)
 
