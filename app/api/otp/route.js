@@ -10,7 +10,7 @@ export async function PATCH(req){
     try {
         const hashOtp = await hash(otp, 10);
 
-        const user = await db.user.findUnique({
+        const user = await db.user.update({
             where: { email },
             data: {
                 hashOtp,
