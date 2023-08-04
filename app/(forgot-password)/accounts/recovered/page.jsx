@@ -1,6 +1,10 @@
+import { Recovered } from "./(components)"
+
 const RecoveredPage = () => {
   return (
-    <div>RecoveredPage</div>
+    <div>
+        <Recovered />
+    </div>
   )
 }
 
