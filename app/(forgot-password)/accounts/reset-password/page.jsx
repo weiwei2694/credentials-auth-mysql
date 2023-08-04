@@ -7,7 +7,7 @@ const ResetPasswordPage = async () => {
   const session = await getServerSession(authOptions)
 
   if (session) redirect('/dashboard');
-  
+
   return (
     <div>
         <ResetPassword />

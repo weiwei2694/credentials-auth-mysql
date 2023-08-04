@@ -8,6 +8,7 @@ const ResetPassword = () => {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   // state from resetPassword
   const setOtp = useOtp((state) => state.setOtp);
@@ -17,7 +18,8 @@ const ResetPassword = () => {
   const handleSendOtp = async (e) => {
     e.preventDefault();
 
-    setMutation(true)
+    setMutation(true);
+    setError("");
 
     // Gets the current time in milliseconds
     const currentTime = new Date().getTime();
@@ -44,6 +46,7 @@ const ResetPassword = () => {
       })
       const status = res.status;
 
+      if (status === 403) setError("This email has been registered via OAuth and cannot use the forgot password feature.")
       if (status === 201) router.push(`/accounts/verify-otp?email=${email}`)
     } catch (error) {
       console.log(error.message)
@@ -53,7 +56,17 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="container max-w-[450px] flex flex-col items-center mt-16">
+    <div className="container max-w-[450px] flex flex-col items-center">
+      {/* Error */}
+      <div className={`mt-16 w-full ${error && 'mb-10'}`}>
+        {error && (
+            <div className="bg-red-500 rounded py-4 px-8">
+              <p className="font-medium text-white">
+                {error}
+              </p>
+            </div>
+        )}
+      </div>
       <div className="w-full flex flex-col gap-10">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-black">
@@ -64,7 +77,7 @@ const ResetPassword = () => {
             or{" "}
             <span
               className="underline cursor-pointer"
-              onClick={() => router.push("/auth/login")}
+              onClick={() => router.push("/login")}
             >
               Login
             </span>
