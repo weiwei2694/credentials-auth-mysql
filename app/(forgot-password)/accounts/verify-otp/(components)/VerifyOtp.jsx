@@ -48,7 +48,7 @@ const VerifyOtp = () => {
 
     try {
       setValidOtp();
-      router.push(`/accounts/recovered?gmail=${otp.email}`)
+      router.push(`/accounts/recovered?email=${otp.email}`)
     } catch (error) {
       console.log(error.message);
     } finally {

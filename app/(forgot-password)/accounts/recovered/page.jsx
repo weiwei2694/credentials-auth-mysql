@@ -2,7 +2,7 @@ import { Recovered, Validation } from "./(components)"
 import { redirect } from "next/navigation";
 
 const RecoveredPage = ({ searchParams }) => {
-    const email = searchParams?.gmail; // gmail will be replaced with email
+    const email = searchParams?.email;
 
     if (!email) redirect('/accounts/reset-password');
 
