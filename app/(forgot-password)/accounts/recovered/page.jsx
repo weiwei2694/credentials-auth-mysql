@@ -11,7 +11,7 @@ const RecoveredPage = ({ searchParams }) => {
         {/* Validation Only */}
         <Validation />
         
-        <Recovered />
+        <Recovered email={email} />
     </div>
   )
 }
