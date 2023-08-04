@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 import { FcGoogle } from "react-icons/fc"
 
@@ -117,6 +118,12 @@ const Login = ({ callbackError }) => {
             >
               {mutation ? "Login..." : "Login"}
             </button>
+          </div>
+
+          <div className="text-center">
+            <Link href="/accounts/reset-password" className="text-blue-600 hover:text-blue-700 active:text-blue-400 transition underline">
+              Having trouble signing in?
+            </Link>
           </div>
         </form>
       </div>
