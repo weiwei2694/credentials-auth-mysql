@@ -1,10 +1,12 @@
 import { PostsItem, PostsNavigation } from "./(components)";
-import { getPosts } from "@/lib/posts";
+import { Refresh } from "@/components";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/auth";
 import { redirect } from "next/navigation";
+
 import { getUsers } from "@/lib/user";
+import { getPosts } from "@/lib/posts";
 
 const PostsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -16,6 +18,9 @@ const PostsPage = async () => {
 
   return (
     <div className="container mt-6 flex flex-col gap-8">
+      {/* Refresh */}
+      <Refresh />
+
       {/* Navigation */}
       <PostsNavigation />
 
