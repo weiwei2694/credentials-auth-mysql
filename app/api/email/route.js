@@ -17,6 +17,8 @@ export async function POST(req){
             }
         })
 
+        if (!user) return new NextResponse('User with this email not found', { status: 404 })
+
         const accountsExist = user?.accounts;
 
         if (accountsExist.length !== 0) return new NextResponse('This email has been registered via OAuth and cannot use the forgot password feature.', { status: 403 })
@@ -30,6 +32,6 @@ export async function POST(req){
         return new NextResponse("Created", { status: 201 })
     } catch (error) {
         console.log(error.message)
-        return new NextResponse(error.message, { status: 400 })
+        return new NextResponse(error.message, { status: 500 })
     }
 }
