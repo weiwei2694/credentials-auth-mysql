@@ -1,6 +1,10 @@
+import { VerifyOtp } from "./(components)"
+
 const VerifyOtpPage = () => {
   return (
-    <div>VerifyOtpPage</div>
+    <div>
+        <VerifyOtp />
+    </div>
   )
 }
 
